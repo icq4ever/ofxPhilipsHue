@@ -84,9 +84,9 @@ vector<ofxPhilipsHueLight> ofxPhilipsHue::getLights(){
 				ofToInt(kv.first),
 				light.get<string>("name"),
 				state.get<bool>("on"),
-				ofMap(state.get<ofxJsonxx::Number>("bri"), 0, 255,   0, 1, true),
-				ofMap(state.get<ofxJsonxx::Number>("hue"), 0, 65535, 0, 1, true),
-				ofMap(state.get<ofxJsonxx::Number>("sat"), 0, 255,   0, 1, true)
+				int(ofMap(state.get<ofxJsonxx::Number>("bri"), 0, 255,   0, 1, true)),
+				int(ofMap(state.get<ofxJsonxx::Number>("hue"), 0, 65535, 0, 1, true)),
+				int(ofMap(state.get<ofxJsonxx::Number>("sat"), 0, 255,   0, 1, true))
 			});
 
 //			ofxPhilipsHueLight & l = result.back();
@@ -122,9 +122,9 @@ vector<ofxPhilipsHueGroup> ofxPhilipsHue::getGroups(){
 				ofToInt(kv.first),
 				group.get<string>("name"),
 				action.get<bool>("on"),
-				ofMap(action.get<ofxJsonxx::Number>("bri"), 0, 255,   0, 1, true),
-				ofMap(action.get<ofxJsonxx::Number>("hue"), 0, 65535, 0, 1, true),
-				ofMap(action.get<ofxJsonxx::Number>("sat"), 0, 255,   0, 1, true),
+				int(ofMap(action.get<ofxJsonxx::Number>("bri"), 0, 255,   0, 1, true)),
+				int(ofMap(action.get<ofxJsonxx::Number>("hue"), 0, 65535, 0, 1, true)),
+				int(ofMap(action.get<ofxJsonxx::Number>("sat"), 0, 255,   0, 1, true)),
 				lightsId
 			});
 			
@@ -196,7 +196,7 @@ string ofxPhilipsHue::sendDeleteCommand(string uri, string json){
 string ofxPhilipsHue::sendRequest(string requestType, string uri, string json){
 	if (bridge.length() == 0 || apiUser.length() == 0){
 		ofLogError("ofxPhilipsHue") << "setLightState(); Can't set Light State! You need to setup first!";
-		return;
+		return "";
 	}
 	float timeOut = 1.0; //seconds
 	Poco::URI pocoUri = Poco::URI( "http://" + bridge + "/api/" + apiUser +uri );
