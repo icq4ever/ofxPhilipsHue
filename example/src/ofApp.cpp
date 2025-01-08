@@ -1,26 +1,28 @@
-#include "testApp.h"
+#include "ofApp.h"
 
 bool state = false; //on / off
 int numLights = 3;
 
-void testApp::setup(){
+void ofApp::setup(){
 
 	lastBrightness = 0;
 	ofBackground(22);
 	ofSetFrameRate(60); //ghetto limit for the api call rate
 	ofSetWindowTitle("ofxPhilipsHue");
 
-	hue.setup("192.168.1.200", "2d5ff43c38ba7ecf1bc852143f75647");
+    // change of your HUE HUB IP and ID
+    // get ID : https://developers.meethue.com/develop/get-started-2/
+	hue.setup("__HUE_HUB_IP_ADDR__", "__YOUR_ID__");
 }
 
 
-void testApp::draw(){
+void ofApp::draw(){
 
 	//background
 	ofColor c = ofColor::white;
 	c.setHsb(255 * lastHue, 255, 255 * lastBrightness);
 	ofSetColor(c);
-	ofRect(0, 0, ofGetWidth(), ofGetHeight());
+	ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
 
 	//current color
 	c.setHsb(
@@ -29,7 +31,7 @@ void testApp::draw(){
 			 255 * ofMap(mouseY, 0, ofGetHeight(), 1, 0, true)
 			 );
 	ofSetColor(c);
-	ofCircle(mouseX, mouseY, 12);
+	ofDrawCircle(mouseX, mouseY, 12);
 
 	ofSetColor(255);
 	ofDrawBitmapString("click to set new light values\nmouseX controls hue\n"
@@ -41,7 +43,7 @@ void testApp::draw(){
 }
 
 
-void testApp::keyPressed(int key){
+void ofApp::keyPressed(int key){
 	state = !state;
 	for(int i = 1; i <= numLights; i++){
 		hue.setLightState(i, state);
@@ -49,7 +51,7 @@ void testApp::keyPressed(int key){
 
 }
 
-void testApp::mousePressed( int x, int y, int button ){
+void ofApp::mousePressed( int x, int y, int button ){
 
 	lastBrightness = ofMap(mouseY, 0, ofGetHeight(), 1, 0, true);
 	lastHue = ofMap(mouseX, 0, ofGetWidth(), 0, 1, true);
